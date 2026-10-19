@@ -4,17 +4,17 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { useDispatch, useSelector } from "react-redux";
-// import {
-//   loginUser,
-//   clearAuthError,
-// } from "@/redux/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  loginUser,
+  clearAuthError,
+} from "@/redux/Slice/AuthSlice";
 
 export default function LoginPage() {
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const router = useRouter();
 
-//   const { loading, error } = useSelector((state) => state.auth);
+  const { loading, error } = useSelector((state) => state.auth);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,19 +23,19 @@ export default function LoginPage() {
   async function handleSubmit(event) {
     event.preventDefault();
 
-    // try {
-    //   await dispatch(
-    //     loginUser({
-    //       email: email.trim(),
-    //       password,
-    //     })
-    //   ).unwrap();
+    try {
+      await dispatch(
+        loginUser({
+          email: email.trim(),
+          password,
+        })
+      ).unwrap();
 
-    //   router.push("/");
-    // } catch {
-    //   // The rejected thunk stores the error in Redux.
-    //   // Read it through useSelector above.
-    // }
+      router.push("/");
+    } catch {
+      // The rejected thunk stores the error in Redux.
+      // Read it through useSelector above.
+    }
   }
 
   return (
@@ -93,7 +93,7 @@ export default function LoginPage() {
                 value={email}
                 onChange={(event) => {
                   setEmail(event.target.value);
-                //   dispatch(clearAuthError());
+                  dispatch(clearAuthError());
                 }}
                 required
                 className="w-full rounded-xl border border-slate-300 px-4 py-3.5 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
@@ -125,7 +125,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(event) => {
                     setPassword(event.target.value);
-                    // dispatch(clearAuthError());
+                    dispatch(clearAuthError());
                   }}
                   required
                   className="w-full rounded-xl border border-slate-300 px-4 py-3.5 pr-20 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100"
@@ -141,21 +141,21 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {/* {error && (
+             {error && (
               <div
                 role="alert"
                 className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700"
               >
                 {error}
               </div>
-            )} */}
+            )} 
 
             <button
               type="submit"
               disabled={loading}
               className="w-full rounded-xl bg-indigo-600 px-5 py-3.5 font-bold text-white shadow-lg shadow-indigo-200 transition hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {/* {loading ? "Signing in..." : "Sign in"} */}
+              {loading ? "Signing in..." : "Sign in"}
             </button>
           </form>
 

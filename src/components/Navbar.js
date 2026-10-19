@@ -2,19 +2,19 @@
 "use client";
 
 import Link from "next/link";
-// import { useDispatch, useSelector } from "react-redux";
-// import { logoutUser } from "@/redux/AuthSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "@/redux/Slice/AuthSlice";
 
 export default function Navbar() {
-//   const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-//   const { user, isAuthenticated, loading } = useSelector(
-//     (state) => state.auth
-//   );
+  const { user, isAuthenticated, loading } = useSelector(
+    (state) => state.auth
+  );
 
-//   function handleLogout() {
-//     dispatch(logoutUser());
-//   }
+  function handleLogout() {
+    dispatch(logoutUser());
+  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur">
@@ -42,16 +42,14 @@ export default function Navbar() {
         </div>
 
         <div className="flex items-center gap-3">
-          {/* {loading ? (
-            <span className="text-sm text-slate-500">Loading...</span>
-          ) : isAuthenticated ? (
+          {isAuthenticated ? (
             <>
               <span className="hidden text-sm text-slate-600 sm:block">
                 Hi, {user?.name || user?.email || "Learner"}
               </span>
 
               <button
-                // onClick={handleLogout}
+                onClick={handleLogout}
                 className="rounded-xl border border-slate-300 px-5 py-2.5 text-sm font-semibold text-slate-700 hover:border-red-200 hover:bg-red-50 hover:text-red-600"
               >
                 Logout
@@ -64,7 +62,7 @@ export default function Navbar() {
             >
               Login
             </Link>
-          )} */}
+          )}
         </div>
       </div>
     </nav>
