@@ -29,8 +29,8 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await loginUserApi(requestData);
       const data = response.data;
-
-      const token = data.accessToken || data.token;
+    console.log("login response => ", data);
+      const token = data.jwttoken;
 
       if (!token) {
         return rejectWithValue(
@@ -40,7 +40,7 @@ export const loginUser = createAsyncThunk(
 
       return {
         token,
-        user: data.user || data.userResponseDTO || null,
+        user: data|| null,
       };
     } catch (error) {
       return rejectWithValue(
