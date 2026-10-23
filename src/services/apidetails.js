@@ -11,7 +11,7 @@ export const coursesData= async()=>{
 
 //  get course data by Id
 export const courseDataById= async(id)=>{
-    const response= await axios.get(`${baseURL}/${id}`);
+    const response= await axios.get(`${baseURL}/courses/${id}`);
     return response;  
 }
 

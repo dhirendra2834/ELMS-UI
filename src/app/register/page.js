@@ -21,7 +21,6 @@ export default function RegisterPage() {
     email: "",
     phoneNumber: "",
     password: "",
-    confirmPassword: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -48,10 +47,6 @@ export default function RegisterPage() {
       return;
     }
 
-    if (form.password !== form.confirmPassword) {
-      setValidationError("Passwords do not match.");
-      return;
-    }
 
     try {
       await dispatch(

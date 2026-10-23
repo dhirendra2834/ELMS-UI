@@ -65,6 +65,7 @@ const AuthSlice = createSlice({
   initialState,
 
   reducers: {
+    
     // Restore authentication after page refresh
     initializeAuth: (state) => {
       if (typeof window !== "undefined") {
