@@ -1,63 +1,19 @@
 
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import {
-  registerUser as registerUserApi,
-  loginUser as loginUserApi,
-} from "@/services/apidetails";
-
-// Register User
-export const registerUser = createAsyncThunk(
-  "auth/register",
-  async (requestData, { rejectWithValue }) => {
-    try {
-      const response = await registerUserApi(requestData);
-      return response.data;
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        "Failed to register the user"
-      );
-    }
-  }
-);
-
-// Login User
-export const loginUser = createAsyncThunk(
-  "auth/login",
-  async (requestData, { rejectWithValue }) => {
-    try {
-      const response = await loginUserApi(requestData);
-      const data = response.data;
-    console.log("login response => ", data);
-      const token = data.jwttoken;
-
-      if (!token) {
-        return rejectWithValue(
-          "Login response does not contain an access token."
-        );
-      }
-
-      return {
-        token,
-        user: data|| null,
-      };
-    } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message ||
-        error.response?.data?.error ||
-        "Failed to login the user"
-      );
-    }
-  }
-);
+import { createSlice} from "@reduxjs/toolkit";
+import {loginUser, registerUser, forgetPassword, verifyOtp, resetPassword, changePassword} from '@/redux/Actions/AuthAction';
 
 const initialState = {
+   // Authentication
   user: null,
   token: null,
   isAuthenticated: false,
   loading: false,
   error: null,
+
+  // Forgot password, OTP, reset and change password
+  authActionLoading: false,
+  authActionError: null,
+  authActionMessage: null,
 };
 
 const AuthSlice = createSlice({
@@ -111,6 +67,11 @@ const AuthSlice = createSlice({
     clearAuthError: (state) => {
       state.error = null;
     },
+
+  clearAuthActionStatus: (state) => {
+  state.authActionError = null;
+  state.authActionMessage = null;
+},
   },
 
   extraReducers: (builder) => {
@@ -122,7 +83,7 @@ const AuthSlice = createSlice({
         state.error = null;
       })
 
-      .addCase(registerUser.fulfilled, (state, action) => {
+      .addCase(registerUser.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
 
@@ -171,14 +132,79 @@ const AuthSlice = createSlice({
         state.loading = false;
         state.error =
           action.payload || action.error.message;
-      });
-  },
-});
+      })
+
+      // forget password
+      .addCase(forgetPassword.pending, (state) => {
+         state.authActionLoading = true;
+        state.authActionError = null;
+         state.authActionMessage = null;
+      })
+      .addCase(forgetPassword.fulfilled, (state, action) => {
+         state.authActionLoading = false;
+       state.authActionMessage =
+       action.payload?.message || "OTP sent successfully";
+    })
+    .addCase(forgetPassword.rejected, (state, action) => {
+       state.authActionLoading = false;
+     state.authActionError = action.payload || "Failed to send OTP";
+     })
+
+    //  verify- otp
+      .addCase(verifyOtp.pending, (state) => {
+         state.authActionLoading = true;
+        state.authActionError = null;
+         state.authActionMessage = null;
+      })
+      .addCase(verifyOtp.fulfilled, (state, action) => {
+         state.authActionLoading = false;
+       state.authActionMessage =
+       action.payload?.message || "OTP sent successfully";
+    })
+    .addCase(verifyOtp.rejected, (state, action) => {
+       state.authActionLoading = false;
+     state.authActionError = action.payload || "Failed to send OTP";
+     })
+   
+    //  reset password
+    .addCase(resetPassword.pending, (state) => {
+         state.authActionLoading = true;
+        state.authActionError = null;
+         state.authActionMessage = null;
+      })
+    .addCase(resetPassword.fulfilled, (state, action) => {
+         state.authActionLoading = false;
+       state.authActionMessage =
+       action.payload?.message || "OTP sent successfully";
+    })
+    .addCase(resetPassword.rejected, (state, action) => {
+       state.authActionLoading = false;
+     state.authActionError = action.payload || "Failed to send OTP";
+     })
+
+    //  change password
+    .addCase(changePassword.pending, (state) => {
+         state.authActionLoading = true;
+        state.authActionError = null;
+         state.authActionMessage = null;
+      })
+    .addCase(changePassword.fulfilled, (state, action) => {
+         state.authActionLoading = false;
+       state.authActionMessage =
+       action.payload?.message || "OTP sent successfully";
+    })
+    .addCase(changePassword.rejected, (state, action) => {
+       state.authActionLoading = false;
+     state.authActionError = action.payload || "Failed to send OTP";
+     })
+
+      },
+    });
 
 export const {
   initializeAuth,
   logoutUser,
-  clearAuthError,
+  clearAuthError, clearAuthActionStatus,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;

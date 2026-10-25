@@ -1,6 +1,7 @@
 
 import "./globals.css";
 import Provider from '../redux/Provider';
+import Navbar from "@/components/Navbar";
 export default function RootLayout({ children }) {
   return (
     <html
@@ -9,6 +10,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full flex flex-col">
           <Provider>
+                <Navbar/>
                   {children}
           </Provider>
       </body>

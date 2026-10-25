@@ -5,10 +5,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  loginUser,
-  clearAuthError,
-} from "@/redux/Slice/AuthSlice";
+import {clearAuthError} from "@/redux/Slice/AuthSlice";
+import {loginUser} from "@/redux/Actions/AuthAction";
 
 export default function LoginPage() {
   const dispatch = useDispatch();

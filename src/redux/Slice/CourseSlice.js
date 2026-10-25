@@ -1,13 +1,13 @@
 
-import { createAsyncThunk, createSlice, isRejectedWithValue } from "@reduxjs/toolkit";
-import { coursesData, courseDataById } from "@/services/apidetails";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { coursesDataApi, courseDataByIdApi } from "@/services/apidetails";
 
 // ALL course displayed 
 export const allcoursesData = createAsyncThunk(
   "courses/allcoursesData",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await coursesData();
+      const response = await coursesDataApi();
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -21,7 +21,7 @@ export const coursesDataById = createAsyncThunk(
   "course/id",
   async (id, { rejectWithValue }) => {
     try {
-      const response = await courseDataById(id);
+      const response = await courseDataByIdApi(id);
       return response.data;
     } catch (error) {
       return rejectWithValue(
