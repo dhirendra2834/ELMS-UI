@@ -159,3 +159,15 @@ export const allChapterBySubIdApi= async(Id)=>{
   return response;
 }
 
+// -------------------- Payment Management(for Enrollment Purpose) -----------------------------
+// create Order
+export const createEnrollmentOrder= async(courseId)=>{
+  const response = api.post(`/payments/create-order`, courseId);
+  return response;
+}
+
+// verify Payment
+export const verifyPayment= async(requestData)=>{
+  const response= api.post(`/payments/verify`, requestData);
+  return response;
+}

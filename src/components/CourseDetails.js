@@ -3,7 +3,8 @@
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {coursesDataById} from '@/redux/Slice/CourseSlice'
+import {coursesDataById} from '@/redux/Slice/CourseSlice';
+import PayNowButton from "./Payment/PayNowButton";
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -41,6 +42,8 @@ export default function CourseDetails() {
         <p className="text-xl font-bold text-blue-600">
           Fees: ₹{courseData.fees}
         </p>
+
+         <PayNowButton courseId={courseData.id} />
       </div>
 
       {/* Subjects */}

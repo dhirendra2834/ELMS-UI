@@ -3,60 +3,7 @@
 
 import Link from "next/link";
 import { useSelector } from "react-redux";
-
-const stats = [
-  {
-    title: "My Courses",
-    value: "—",
-    icon: "📚",
-    color: "bg-blue-100 text-blue-700",
-  },
-  {
-    title: "My Subjects",
-    value: "—",
-    icon: "📖",
-    color: "bg-purple-100 text-purple-700",
-  },
-  {
-    title: "My Students",
-    value: "—",
-    icon: "👨‍🎓",
-    color: "bg-green-100 text-green-700",
-  },
-  {
-    title: "Pending Reviews",
-    value: "—",
-    icon: "📝",
-    color: "bg-orange-100 text-orange-700",
-  },
-];
-
-const quickActions = [
-  {
-    title: "Manage My Courses",
-    description: "View your assigned courses and manage their content.",
-    href: "/teacher/courses",
-    icon: "📚",
-  },
-  {
-    title: "Manage Subjects",
-    description: "View subjects and organize learning content.",
-    href: "/teacher/subjects",
-    icon: "📖",
-  },
-  {
-    title: "Manage Chapters",
-    description: "Create and update chapters for your subjects.",
-    href: "/teacher/chapters",
-    icon: "🗂️",
-  },
-  {
-    title: "View My Students",
-    description: "Check enrolled students and their learning progress.",
-    href: "/teacher/students",
-    icon: "👨‍🎓",
-  },
-];
+import {teacherstats as stats, quickActions} from "@/components/constants/CommonConstants"
 
 export default function TeacherDashboard({ previewMode = false }) {
   const { user } = useSelector((state) => state.auth);

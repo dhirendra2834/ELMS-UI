@@ -2,72 +2,25 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 
 import StudentDashboard from "@/components/dashboard/StudentDashboard";
 import TeacherDashboard from "@/components/dashboard/TeacherDashboard";
 
-const stats = [
-  {
-    title: "Total Students",
-    value: "—",
-    icon: "🎓",
-    color: "bg-blue-50 text-blue-700",
-  },
-  {
-    title: "Total Teachers",
-    value: "—",
-    icon: "👨‍🏫",
-    color: "bg-purple-50 text-purple-700",
-  },
-  {
-    title: "Total Courses",
-    value: "—",
-    icon: "📚",
-    color: "bg-emerald-50 text-emerald-700",
-  },
-  {
-    title: "Total Enrollments",
-    value: "—",
-    icon: "📝",
-    color: "bg-orange-50 text-orange-700",
-  },
-];
+import AdminActionModal from "@/components/from/AdminActionModal";
 
-const managementItems = [
-  {
-    title: "Manage Students",
-    description: "View student details and manage accounts.",
-    icon: "🎓",
-    href: "/admin/students",
-  },
-  {
-    title: "Manage Teachers",
-    description: "View teachers and manage their accounts.",
-    icon: "👨‍🏫",
-    href: "/admin/teachers",
-  },
-  {
-    title: "Manage Courses",
-    description: "Create and manage courses, subjects, and chapters.",
-    icon: "📚",
-    href: "/admin/courses",
-  },
-  {
-    title: "Enrollments",
-    description: "Check which students enrolled in each course.",
-    icon: "📝",
-    href: "/admin/enrollments",
-  },
-];
+import {
+  adminstats as stats,
+  managementItems,
+} from "@/components/constants/CommonConstants";
 
 export default function AdminDashboard() {
   const { user } = useSelector((state) => state.auth);
 
   const [preview, setPreview] = useState("ADMIN");
+  const [activeModal, setActiveModal] = useState(null);
 
-  // Preview other dashboard UIs without changing the logged-in role.
+  // Preview Student Dashboard
   if (preview === "STUDENT") {
     return (
       <div className="min-h-screen bg-slate-50">
@@ -82,6 +35,7 @@ export default function AdminDashboard() {
           </div>
 
           <button
+            type="button"
             onClick={() => setPreview("ADMIN")}
             className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
           >
@@ -94,6 +48,7 @@ export default function AdminDashboard() {
     );
   }
 
+  // Preview Teacher Dashboard
   if (preview === "TEACHER") {
     return (
       <div className="min-h-screen bg-slate-50">
@@ -108,6 +63,7 @@ export default function AdminDashboard() {
           </div>
 
           <button
+            type="button"
             onClick={() => setPreview("ADMIN")}
             className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
           >
@@ -124,7 +80,7 @@ export default function AdminDashboard() {
     <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-8">
 
-        {/* Welcome section */}
+        {/* Welcome Section */}
         <section className="flex flex-col justify-between gap-5 rounded-2xl bg-gradient-to-r from-indigo-700 to-violet-700 p-6 text-white sm:flex-row sm:items-center sm:p-8">
           <div>
             <p className="text-sm font-medium text-indigo-200">
@@ -140,15 +96,16 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <Link
-            href="/admin/students/create"
+          <button
+            type="button"
+            onClick={() => setActiveModal("USER")}
             className="rounded-xl bg-white px-5 py-3 text-center text-sm font-semibold text-indigo-700 hover:bg-indigo-50"
           >
             + Add New User
-          </Link>
+          </button>
         </section>
 
-        {/* Dashboard preview selector */}
+        {/* Dashboard Preview Selector */}
         <section className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:flex-row sm:items-center">
           <div>
             <h2 className="text-lg font-bold text-slate-900">
@@ -160,19 +117,18 @@ export default function AdminDashboard() {
             </p>
           </div>
 
-          <select
-            value={preview}
-            onChange={(event) => setPreview(event.target.value)}
-            aria-label="Choose dashboard preview"
-            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm font-medium text-slate-700 outline-none focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 sm:w-64"
-          >
-            <option value="ADMIN">Admin Dashboard</option>
-            <option value="STUDENT">Student Dashboard Preview</option>
-            <option value="TEACHER">Teacher Dashboard Preview</option>
-          </select>
+        <select
+  value={role}
+  onChange={(event) => setRole(event.target.value)}
+  name="role"
+  className="w-full rounded-xl border border-slate-300 px-4 py-3"
+>
+  <option value="STUDENT">Student</option>
+  <option value="TEACHER">Teacher</option>
+</select>
         </section>
 
-        {/* Statistics */}
+        {/* Platform Statistics */}
         <section>
           <h2 className="mb-4 text-xl font-bold text-slate-900">
             Platform Overview
@@ -189,7 +145,9 @@ export default function AdminDashboard() {
                     {stat.title}
                   </p>
 
-                  <span className={`rounded-xl p-3 text-xl ${stat.color}`}>
+                  <span
+                    className={`rounded-xl p-3 text-xl ${stat.color}`}
+                  >
                     {stat.icon}
                   </span>
                 </div>
@@ -206,7 +164,7 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* Management */}
+        {/* Platform Management */}
         <section>
           <div className="mb-5">
             <h2 className="text-xl font-bold text-slate-900">
@@ -238,12 +196,12 @@ export default function AdminDashboard() {
                       {item.description}
                     </p>
 
-                    <Link
+                    <a
                       href={item.href}
                       className="mt-4 inline-block text-sm font-semibold text-indigo-600 hover:text-indigo-800"
                     >
                       Open Management →
-                    </Link>
+                    </a>
                   </div>
                 </div>
               </article>
@@ -251,44 +209,55 @@ export default function AdminDashboard() {
           </div>
         </section>
 
-        {/* Quick actions */}
+        {/* Quick Actions */}
         <section className="rounded-2xl border border-slate-200 bg-white p-6">
           <h2 className="text-xl font-bold text-slate-900">
             Quick Actions
           </h2>
 
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link
-              href="/admin/courses/create"
+            <button
+              type="button"
+              onClick={() => setActiveModal({ type: "COURSE" })}
               className="rounded-xl bg-indigo-600 px-5 py-3 text-sm font-semibold text-white hover:bg-indigo-700"
             >
               + Create Course
-            </Link>
+            </button>
 
-            <Link
-              href="/admin/teachers/create"
+            <button
+              type="button"
+                onClick={() => setActiveModal({ type: "USER", role: "TEACHER" })}
               className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               + Add Teacher
-            </Link>
+            </button>
 
-            <Link
-              href="/admin/students/create"
+            <button
+              type="button"
+              onClick={() => setActiveModal({ type: "USER", role: "STUDENT" })}
               className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               + Add Student
-            </Link>
+            </button>
 
-            <Link
-              href="/admin/enrollments"
+            <a
+              href="/enrollments"
               className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
             >
               View Enrollments
-            </Link>
+            </a>
           </div>
         </section>
-
       </div>
+
+      {/* User / Course Form Modal */}
+      {activeModal && (
+        <AdminActionModal
+           type={activeModal.type}
+    role={activeModal.role}
+    onClose={() => setActiveModal(null)}
+        />
+      )}
     </main>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import CourseDetails from "../CourseDetails";
+import CourseDetails from "@/components/CourseDetails";
 
 export default function Page() {
   return (

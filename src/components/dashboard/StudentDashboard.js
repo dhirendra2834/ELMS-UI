@@ -2,43 +2,55 @@
 "use client";
 
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { allcoursesData } from "@/redux/Slice/CourseSlice";
 
-const sampleCourses = [
-  {
-    id: 1,
-    name: "Java Programming",
-    description: "Master Java fundamentals and OOP concepts.",
-    completedChapters: 8,
-    totalChapters: 12,
-    progress: 67,
-    color: "bg-indigo-600",
-  },
-  {
-    id: 2,
-    name: "Spring Boot & REST APIs",
-    description: "Build REST APIs with Spring Boot.",
-    completedChapters: 5,
-    totalChapters: 15,
-    progress: 33,
-    color: "bg-emerald-600",
-  },
-  {
-    id: 3,
-    name: "React & Next.js",
-    description: "Build modern interactive web applications.",
-    completedChapters: 12,
-    totalChapters: 12,
-    progress: 100,
-    color: "bg-violet-600",
-  },
-];
+// const sampleCourses = [
+//   {
+//     id: 1,
+//     name: "Java Programming",
+//     description: "Master Java fundamentals and OOP concepts.",
+//     completedChapters: 8,
+//     totalChapters: 12,
+//     progress: 67,
+//     color: "bg-indigo-600",
+//   },
+//   {
+//     id: 2,
+//     name: "Spring Boot & REST APIs",
+//     description: "Build REST APIs with Spring Boot.",
+//     completedChapters: 5,
+//     totalChapters: 15,
+//     progress: 33,
+//     color: "bg-emerald-600",
+//   },
+//   {
+//     id: 3,
+//     name: "React & Next.js",
+//     description: "Build modern interactive web applications.",
+//     completedChapters: 12,
+//     totalChapters: 12,
+//     progress: 100,
+//     color: "bg-violet-600",
+//   },
+// ];
 
 export default function StudentDashboard() {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const { coursesData, loading, error } = useSelector(
+    (state) => state.courses
+  );
+
+  useEffect(() => {
+    dispatch(allcoursesData());
+  }, [dispatch]);
+
 
   // Demo data: replace with enrolled courses from your API.
-  const courses = sampleCourses;
+  const courses = coursesData;
 
   const completedCourses = courses.filter(
     (course) => course.progress === 100
